@@ -42,9 +42,11 @@ export default function SignIn() {
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 // Signed in 
-                console.log('sign in ', userCredential.user);
-
+                console.log('sign in ', userCredential.user.uid);
+                localStorage.setItem('uid', userCredential.user.uid)
+                navigate('/home')
             })
+            
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
@@ -130,7 +132,7 @@ export default function SignIn() {
                                     <Link to="/signup"> Don't have an account? Sign Up</Link>
                                 </Grid>
                             </Grid>
-                            
+
                             <Copyright sx={{ mt: 5 }} />
                         </Box>
                     </Box>

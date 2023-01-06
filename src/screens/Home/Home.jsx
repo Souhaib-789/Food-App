@@ -22,6 +22,9 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import FoodCard from '../../components/card/FoodCard';
 import axios from 'axios';
+import { useNavigate } from 'react-router';
+import AppButton from '../../components/button/AppButton';
+import { Button } from '@mui/material';
 
 const drawerWidth = 240;
 
@@ -93,17 +96,19 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 export default function MiniDrawer() {
 
     const [products, setProducts] = useState([])
+    const [category, setCategory] = useState('pizza')
 
     useEffect(() => {
-        axios.get('https://api.spoonacular.com/food/products/search?query=pizza&apiKey=c67f7a16ab07455db25586f302928b7d')
+        axios.get(`https://api.spoonacular.com/food/products/search?query=${category}&apiKey=34be85185ef04120be1b581d09951aa5`)
             .then(res => {
-                console.log(res?.data?.productsx);
+                console.log(res?.data);
                 setProducts(res?.data?.products)
             })
             .catch(err => {
                 console.log(err);
             })
     }, [])
+
 
 
     const theme = useTheme();
@@ -144,8 +149,28 @@ export default function MiniDrawer() {
     }));
 
 
-
-
+    const navigate = useNavigate()
+    const sideBarOptions = [
+        {
+            text: 'Home',
+            onClick: () => {
+                navigate('#')
+            }
+        },
+        {
+            text: 'Wishlist',
+            onClick: () => {
+                navigate('/wishlist')
+            }
+        },
+        {
+            text: 'Logout',
+            onClick: () => {
+                navigate('/')
+                localStorage.removeItem('uid')
+            }
+        },
+    ]
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
@@ -163,8 +188,10 @@ export default function MiniDrawer() {
                     >
                         <MenuIcon />
                     </IconButton>
+
                     <Typography variant="h6" noWrap component="div">My Food App</Typography>
                 </Toolbar>
+
             </AppBar>
             <Drawer variant="permanent" open={open}>
                 <DrawerHeader>
@@ -174,8 +201,8 @@ export default function MiniDrawer() {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    {['Home', 'Wishlist', 'Profile',].map((text, index) => (
-                        <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+                    {sideBarOptions.map((text, index) => (
+                        <ListItem key={text.text} disablePadding sx={{ display: 'block' }}>
                             <ListItemButton
                                 sx={{
                                     minHeight: 48,
@@ -192,7 +219,7 @@ export default function MiniDrawer() {
                                 >
                                     {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                                 </ListItemIcon>
-                                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                                <ListItemText onClick={text.onClick} primary={text.text} sx={{ opacity: open ? 1 : 0 }} />
                             </ListItemButton>
                         </ListItem>
                     ))}
@@ -205,38 +232,22 @@ export default function MiniDrawer() {
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <DrawerHeader />
 
+                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                    <Button onClick={() => { setCategory('pizza'); console.log(category) }}>Pizza</Button>
+                    <Button onClick={() => { setCategory('biryani'); console.log(category) }}>Biryani</Button>
+                    <Button onClick={() => { setCategory('burger') }}>Burger</Button>
+                </Grid>
 
 
 
-                <Box sx={{ flexGrow: 1 }}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={6} md={8}>
-                            <Item>xs=6 md=8</Item>
-                        </Grid>
-                        <Grid item xs={6} md={4}>
-                            <Item>xs=6 md=4</Item>
-                        </Grid>
-                        <Grid item xs={6} md={4}>
-                            <Item>xs=6 md=4</Item>
-                        </Grid>
-                        <Grid item xs={6} md={8}>
-                            <Item>xs=6 md=8</Item>
-                        </Grid>
-                    </Grid>
-                </Box>
-
-
-
-                <Box sx={{ display: 'flex', flexWrap: "wrap"}}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: "wrap" }}>
                     {products.map((data, i) => {
                         return <FoodCard key={i} title={data.title} image={data.image} />
                     })}
                 </Box>
 
-
-
-
             </Box>
         </Box>
     );
 }
+

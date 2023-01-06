@@ -6,28 +6,27 @@ import SignIn from './screens/login/Login';
 import Signup from './screens/signup/Signup';
 import { Route, Routes } from 'react-router-dom';
 import Home from './screens/Home/Home';
+import Wishlist from './screens/wishlist/Wishlist';
+import ProtectedRoutes from './protectedRoutes/ProtectedRoutes';
 
 function App() {
 
-  useEffect(()=>{
-    axios.get('https://api.spoonacular.com/food/products/search?query=pizza&apiKey=c67f7a16ab07455db25586f302928b7d')
-    .then(res => {
-      console.log(res);
-    })
-    .catch(err => {
-      console.log(err);
-    })
-  },[])
-  
   return (
     <div className="App">
       <Routes>
-        {/* <Route path='/' element={<SignIn/>} /> */}
-        <Route path='/signup' element={<Signup/>} />
-        <Route path='/' element={<Home/>} />
+        <Route path='/signup' element={<Signup />} />
+        <Route path='/' element={<SignIn />} />
+
+        <Route element={<ProtectedRoutes />}>
+          <Route path='/home' element={<Home />} />
+          <Route path='/wishlist' element={<Wishlist />} />
+          <Route path='*' element={<h1 style={{ textAlign: 'center', marginTop: '20px' }}>Error 404 Page Not Found </h1>} />
+        </Route>
+
       </Routes>
-    
-    
+
+
+
     </div>
   );
 }

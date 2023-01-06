@@ -15,6 +15,7 @@ import { auth, db } from '../../firebase/Firebase'
 import AppButton from '../../components/button/AppButton';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { doc, setDoc } from '@firebase/firestore';
 
 
 const theme = createTheme();
@@ -39,7 +40,7 @@ export default function Signup() {
                     uid: userCredential.user.uid
                 }
                 console.log(userData);
-                // await setDoc(doc(db, "Users Signup Data", userCredential.user.uid), userData);
+                await setDoc(doc(db, "Users Signup Data", userCredential.user.uid), userData);
                 navigate('/')
             })
             .catch((error) => {
@@ -59,21 +60,7 @@ export default function Signup() {
     return (
         <ThemeProvider theme={theme}>
             <Grid container component="main" sx={{ height: '100vh' }}>
-                {/* <CssBaseline /> */}
-                {/* <Grid
-                    item
-                    xs={false}
-                    sm={4}
-                    md={7}
-                    sx={{
-                        backgroundImage: 'url(https://source.unsplash.com/random)',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundColor: (t) =>
-                            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                    }}
-                /> */}
+               
                 <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                     <Box
                         sx={{
