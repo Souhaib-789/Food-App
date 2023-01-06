@@ -2,6 +2,9 @@ import logo from './logo.svg';
 import './App.css';
 import { useEffect } from 'react';
 import axios from 'axios';
+import SignIn from './components/login/Login';
+import Signup from './components/signup/Signup';
+import { Route, Routes } from 'react-router-dom';
 
 function App() {
 
@@ -16,6 +19,11 @@ function App() {
   },[])
   return (
     <div className="App">
+      <Routes>
+        <Route path='/' element={<SignIn/>} />
+        <Route path='/signup' element={<Signup/>} />
+      </Routes>
+    
     
     </div>
   );
