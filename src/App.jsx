@@ -2,8 +2,8 @@ import logo from './logo.svg';
 import './App.css';
 import { useEffect } from 'react';
 import axios from 'axios';
-import SignIn from './components/login/Login';
-import Signup from './components/signup/Signup';
+import SignIn from './screens/login/Login';
+import Signup from './screens/signup/Signup';
 import { Route, Routes } from 'react-router-dom';
 
 function App() {
